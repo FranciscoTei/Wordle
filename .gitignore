@@ -5,6 +5,7 @@
 ### C ###
 # Prerequisites
 *.d
+*.exe
 
 # Object files
 *.o
