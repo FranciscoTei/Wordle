@@ -4,10 +4,7 @@
 #include <time.h>
 #include "wordle.h"
 #include "utils.h"
-
-//char palavras[260000][10];
-
-#define MAX_LINHA 100
+#include "autenticacao.h"
 
 int sorteia_palavra(char *palavra) {
     FILE *palavras = fopen("dados/lista_sem_acentos.txt", "r");
@@ -32,14 +29,9 @@ int sorteia_palavra(char *palavra) {
             linha_atual++;
         }
     }
-    printf("A Palavra sorteada foi: %s (linha %d)\n", palavra, linha_sorteada);
     fclose(palavras);
     return 0;
 }
-
-#define MAX_PALAVRAS 262000
-#define TAMANHO_PALAVRA 30
-
 
 
 char (*palavras)[TAMANHO_PALAVRA];
@@ -64,7 +56,6 @@ void load_palavras() {
         palavras[linha_palavra][strcspn(palavras[linha_palavra], "\n")] = '\0';
         linha_palavra++;
     }
-    printf("Palavras carregadas com sucesso\n");
     fclose(arq_palavras);
 }
 
@@ -159,7 +150,6 @@ void comparar_palavras(const char *chute, const char *secreta, char *resultado) 
         }
     }
     gerar_resultado(resultado, dica);
-    //printf("%s\n", resultado);
 }
 
 void gerar_resultado(char *resultado, Dica *dica) {
@@ -221,7 +211,6 @@ void wordle(int qtd_letras) {
         scanf("%s", chute);
         if (validaChute(chute, qtd_letras)) {
             char resultado_dica[60];;
-            //print_palavra_formatada(chute);
             comparar_palavras(chute, palavra, resultado_dica);
             Jogo novoChute;
             strcpy(novoChute.chute, chute);
@@ -239,10 +228,34 @@ void wordle(int qtd_letras) {
                 }
             }
             if (strcmp(chute, palavra) == 0) {
+                usuarioLogado.status.pontos += 6 - qtd_chutes;
+                usuarioLogado.status.jogos++;
                 printf("Voce acertou!\n");
                 return;
             }
         }
         qtd_chutes++;
     }
+}
+void exibirRegras() {
+    printf("WORDLE 🔤\n\n");
+    printf("📌 Objeto do jogo:\n");
+    printf("Acertar a sequência de letras, formando a palavra antes determinada pelo bot.\n\n");
+    printf("🤓 Como jogar:\n");
+    printf("• Inicialmente, o jogador deverá mandar /blablabla no privado do bot e enviar uma palavra de 5 letras.\n\n");
+    printf("○ Palavra enviada: Após o jogador ter enviado a palavra, o bot irá dizer quais letras pertencem à palavra misteriosa e quais letras estão no lugar certo daquela palavra.\n\n");
+    printf("🟥 Letras incorretas, não tem na palavra.\n");
+    printf("🟨 Letras corretas, porém na posição errada.\n");
+    printf("🟩 Letras corretas e no local certo.\n\n");
+    printf("○ Novo chute: Após o bot ter enviado a 'correção' das letras, o jogador irá chutar uma nova palavra seguindo as dicas que ele obteve na primeira rodada.\n\n");
+    printf("• O jogador terá seis tentativas para adivinhar a palavra misteriosa, tendo a chance de ganhar mais pontos quanto menos chutes forem dados.\n\n");
+    printf("• Após o jogador acertar a palavra misteriosa ou esgotar as seis tentativas, o jogador só poderá jogar novamente no dia seguinte.\n\n");
+    printf("💰 Pontuação:\n");
+    printf("Um chute – 6 pontos\n");
+    printf("Dois chutes – 5 pontos\n");
+    printf("Três chutes – 4 pontos\n");
+    printf("Quatro chutes – 3 pontos\n");
+    printf("Cinco chutes – 2 pontos\n");
+    printf("Seis chutes – 1 ponto\n\n");
+    return;
 }

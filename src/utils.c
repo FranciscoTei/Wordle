@@ -1,4 +1,5 @@
 #include "utils.h"
+#include "funcoes.h"
 
 void Limpar_Tela(){
 
@@ -7,6 +8,7 @@ void Limpar_Tela(){
     #else 
         system("clear");   
     #endif
+    printBanner();
 }
 
 void Configura_Terminal() {

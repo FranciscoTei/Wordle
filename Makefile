@@ -3,7 +3,7 @@ TARGET = main
 CC = gcc
 CFLAGS = -Wall -Wextra -g
 
-SRC = main.c src/wordle.c src/utils.c
+SRC = main.c src/wordle.c src/utils.c src/funcoes.c src/autenticacao.c src/configuracoes.c src/suporte.c src/ranking.c
 
 TEST_TARGET = teste
 

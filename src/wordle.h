@@ -8,6 +8,10 @@
 #define GREEN "\x1b[42m"
 #define RESET "\x1b[0m"
 
+#define MAX_LINHA 100
+#define MAX_PALAVRAS 262000
+#define TAMANHO_PALAVRA 30
+
 typedef enum {
     VENCEU,
     PERDEU,
@@ -43,5 +47,7 @@ int validaChute(char* chute, int qtd_letras);
 void atualizarHistorico(const char *filename, int index, const Jogo *novoChute);
 void comparar_palavras(const char *chute, const char *secreta, char *resultado);
 void gerar_resultado(char *resultado, Dica *dica);
+void exibirRegras();
+void exibirRanking();
 
 #endif
