@@ -1,7 +1,7 @@
 # 🔠 Wordle
 Este projeto faz parte da avaliação da segunda unidade da disciplina de Algoritmos e Estruturas de Dados. O objetivo foi desenvolver uma aplicação que contém alguns conceitos fundamentais, como a implementação de operações CRUD (Create, Read, Update, Delete). No contexto do jogo, implementei essas operações para o gerenciamento de contas de usuário, onde é possível criar, visualizar, editar ou deletar uma conta.
 
-Além disso, o projeto utiliza o algoritmo próprio de quicksort para ordenar jogadores por pontos na função de ranking. A busca binária também foi implementada na lista de palavras para verificar se o palpite do jogador é uma palavra válida do português brasileiro. Com isso, o projeto une teoria e prática ao aplicar essas estruturas e algoritmos em um contexto lúdico e funcional.
+Além disso, o projeto utiliza o algoritmo próprio de quicksort para ordenar jogadores por pontos na função de ranking. A busca binária também foi implementada na lista de palavras para verificar se o palpite do jogador é uma palavra válida do português brasileiro.
 
 ## 🚀 Funcionalidades
 
