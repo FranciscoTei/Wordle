@@ -45,6 +45,22 @@ void menuConfiguracoes() {
                 Limpar_Tela();
                 enviarMensagemSuporte();
                 break;
+            case 6:
+                Limpar_Tela();
+                    NoMensagemSuporte* listaMensagens = carregarMensagensSuporte();
+                    if (listaMensagens != NULL) {
+                        printf("\tMENSAGENS DE SUPORTE\n\n");
+                        imprimirMensagensSuporte(listaMensagens);
+                    }
+                    
+                    // Liberar a memória da lista encadeada (implementação real deve ter uma função para isso)
+                    NoMensagemSuporte* atual = listaMensagens;
+                    while (atual != NULL) {
+                        NoMensagemSuporte* proximo = atual->proximo;
+                        free(atual);
+                        atual = proximo;
+                    }
+                break;
             case 0:
                 return;
                 break;

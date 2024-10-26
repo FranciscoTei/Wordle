@@ -10,7 +10,7 @@ int sorteia_palavra(char *palavra) {
     FILE *palavras = fopen("dados/lista_sem_acentos.txt", "r");
     if (!palavras) {
         perror("Erro ao abrir o arquivo");
-        return 0;
+        return 1;
     }
 
     srand(time(NULL));

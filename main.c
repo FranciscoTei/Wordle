@@ -5,13 +5,8 @@
 #include "src/utils.h"
 #include "src/funcoes.h"
 #include "src/autenticacao.h"
+#include "src/suporte.h"
 
-//int main(void) {
-//    Configura_Terminal();
-//    load_palavras();
-//    wordle(5);
-//
-//}
 
 int main() {
     Configura_Terminal();

@@ -3,3 +3,8 @@ Email: peto2@gmail.com
 Data/Hora: 22/09/2024
 Mensagem: bom dia
 
+Nome: Francisco
+Email: petofilho@gmail.com
+Data/Hora: 26/10/2024
+Mensagem: preciso de ajuda, o jogo me deu pontos errado
+
