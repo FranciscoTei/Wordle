@@ -1,51 +1,137 @@
-# 🔠 Wordle
-Este projeto faz parte da avaliação da segunda unidade da disciplina de Algoritmos e Estruturas de Dados. O objetivo foi desenvolver uma aplicação que contém alguns conceitos fundamentais, como a implementação de operações CRUD (Create, Read, Update, Delete). No contexto do jogo, implementei essas operações para o gerenciamento de contas de usuário, onde é possível criar, visualizar, editar ou deletar uma conta.
+# 📋 Avaliação Unidade III - Lista Encadeada
 
-Além disso, o projeto utiliza o algoritmo próprio de quicksort para ordenar jogadores por pontos na função de ranking. A busca binária também foi implementada na lista de palavras para verificar se o palpite do jogador é uma palavra válida do português brasileiro.
+## Introdução
+A atualização deste projeto faz parte da avaliação da terceira unidade de Algoritmos e Estruturas de Dados. A tarefa pede a implementação de uma lista encadeada. Optei por expandi o sistema de suporte para isso, antes era possível apenas enviar mensagens ao suporte. E agora com a lista encadeada é possível também visualizar as mensagens. Quando um usuário envia uma mensagem, ela é armazenada em um arquivo de texto.
 
-## 🚀 Funcionalidades
+## Funções Implementadas
+### Enviar Mensagem ao Suporte
+Os usuários podem enviar mensagens ao suporte, que são registradas em um arquivo de texto `mensagens_suporte.txt`. A função captura o nome, email e mensagem do usuário, registra a data atual e armazena essas informações no arquivo.
 
--   **Jogar**: O jogador pode fazer palpites para adivinhar a palavra correta.
--   **Visualizar Dados**: Acesso ao perfil com dados e estatísticas de jogos.
--   **Gerenciar Conta**: Criar, editar ou deletar a conta do usuário.
--   **Ranking**: Visualizar o ranking dos jogadores, ordenado por pontos.
+### Carregar Mensagens do Suporte
+As mensagens enviadas ao suporte são carregadas do arquivo `mensagens_suporte.txt` para uma lista encadeada em memória. Cada mensagem é representada por uma estrutura `MensagemSuporte`.
 
-## 🛠️ Como Rodar o Projeto
+## Como Funciona
+### Estruturas
+#### `MensagemSuporte`
+Estrutura que armazena informações para o suporte, contendo nome, email, mensagem e data/hora.
+```c
+typedef struct {
+    char nome[100];
+    char email[100];
+    char mensagem[500];
+    char data_hora[50];
+} MensagemSuporte;
+```
+#### `NoMensagemSuporte`
+Estrutura de nó para a lista encadeada, que contém um objeto `MensagemSuporte` e um ponteiro para o próximo nó na lista.
+```c
+struct MensagemSuporteNo {
+    MensagemSuporte mensagem;
+    struct MensagemSuporteNo* proximo;
+};
+```
+### Funções
+### Enviar Mensagem ao Suporte
 
-1. **Clone o repositório:**
+#### `enviarMensagemSuporte`
 
-    ```bash
-    git clone https://github.com/FranciscoTei/Wordle.git
-    cd Wordle
+A função `enviarMensagemSuporte` permite que um usuário envie uma mensagem ao suporte. Ela captura o nome e email do usuário logado, solicita a mensagem do usuário e registra a data e hora atuais. Em seguida, a função armazena essas informações em um arquivo de texto chamado `mensagens_suporte.txt`. Se a mensagem for enviada com sucesso, uma confirmação é exibida; caso contrário, uma mensagem de erro é mostrada.
+```c
+void enviarMensagemSuporte() {
+    MensagemSuporte novaMensagem;
+    
+    strcpy(novaMensagem.nome, usuarioLogado.nome);
+    strcpy(novaMensagem.email, usuarioLogado.email);
+    printf("\tSUPORTE\n\n");
+    printf("Digite sua mensagem: (Até 500 caracteres)\n");
+    fgets(novaMensagem.mensagem, 500, stdin);
+    novaMensagem.mensagem[strcspn(novaMensagem.mensagem, "\n")] = '\0';
+    strcpy(novaMensagem.data_hora, obterDataAtual());
 
-2. **Compile o projeto utilizando make:**
-   ```bash
-   make
+    FILE* arquivo = fopen("mensagens_suporte.txt", "a");
+    if (arquivo != NULL) {
+        fprintf(arquivo, "Nome: %s\n", novaMensagem.nome);
+        fprintf(arquivo, "Email: %s\n", novaMensagem.email);
+        fprintf(arquivo, "Data/Hora: %s\n", novaMensagem.data_hora);
+        fprintf(arquivo, "Mensagem: %s\n\n", novaMensagem.mensagem);
+        fclose(arquivo);
+        Limpar_Tela();
+        printf("Mensagem enviada com sucesso!\n");
+    } else {
+        Limpar_Tela();
+        printf("Erro ao abrir o arquivo.\n");
+    }
+}
+```
+#### `novoNoMensagemSuporte`
+Função para criar um novo nó da lista encadeada `NoMensagemSuporte`.
+```c
+NoMensagemSuporte* novoNoMensagemSuporte(MensagemSuporte mensagem) {
+    NoMensagemSuporte* novo = (NoMensagemSuporte*) malloc(sizeof(NoMensagemSuporte));
+    if (novo != NULL) {
+        novo->mensagem = mensagem;
+        novo->proximo = NULL;
+    }
+    return novo;
+}
+```
 
-Após a compilação, o arquivo gerado será executado automaticamente e será deletado em seguida para manter o ambiente limpo.
+#### `carregarMensagensSuporte`
+Função para carregar todas as mensagens do arquivo `mensagens_suporte.txt` para uma lista encadeada em memória.
+```c
+NoMensagemSuporte* carregarMensagensSuporte() {
+    FILE* arquivo = fopen("mensagens_suporte.txt", "r");
+    if (arquivo == NULL) {
+        printf("Erro ao abrir o arquivo.\n");
+        return NULL;
+    }
 
-## 🔨 TODO
+    NoMensagemSuporte* comeco = NULL;
+    NoMensagemSuporte* atual = NULL;
+    MensagemSuporte mensagem;
 
--   Permitir que o usuário escolha quantas letras deseja no desafio (de 5 a 10).
--   Ranking por quantidade de letras.
--   Paginação no ranking para facilitar a navegação.
--   Modo daltônico para acessibilidade.
--   Opção para mudar o idioma da interface ou do jogo.
+    while (fscanf(arquivo, "Nome: %[^\n]\n", mensagem.nome) == 1) {
+        fscanf(arquivo, "Email: %[^\n]\n", mensagem.email);
+        fscanf(arquivo, "Data/Hora: %[^\n]\n", mensagem.data_hora);
+        fscanf(arquivo, "Mensagem: %[^\n]\n\n", mensagem.mensagem);
 
-## 🤝 Contribuições
+        NoMensagemSuporte* novoNo = novoNoMensagemSuporte(mensagem);
+        if (novoNo == NULL) {
+            printf("Erro ao alocar memória.\n");
+            fclose(arquivo);
+            return NULL;
+        }
 
-Contribuições são bem-vindas! Se você tiver sugestões de melhorias, encontrar bugs ou desejar adicionar novas funcionalidades, fique à vontade para abrir uma issue ou enviar um pull request. Este projeto é um trabalho em progresso, e a colaboração da comunidade pode torná-lo ainda melhor.
+        if (comeco == NULL) {
+            comeco = novoNo;
+            atual = comeco;
+        } else {
+            atual->proximo = novoNo;
+            atual = atual->proximo;
+        }
+    }
 
-### Para contribuir:
+```
 
-1.  Fork o repositório.
-2.  Crie uma nova branch com sua feature ou correção de bug: `git checkout -b minha-feature`.
-3.  Commit suas alterações: `git commit -m 'Minha nova feature'`.
-4.  Push para a branch: `git push origin minha-feature`.
-5.  Abra um pull request no repositório original.
+#### `imprimirMensagensSuporte`
+Função para imprimir todas as mensagens carregadas na lista encadeada.
+```c
+void imprimirMensagensSuporte(NoMensagemSuporte* lista) {
+    NoMensagemSuporte* atual = lista;
+    while (atual != NULL) {
+        printf("Nome: %s\n", atual->mensagem.nome);
+        printf("Email: %s\n", atual->mensagem.email);
+        printf("Data/Hora: %s\n", atual->mensagem.data_hora);
+        printf("Mensagem: %s\n\n", atual->mensagem.mensagem);
+        atual = atual->proximo;
+    }
+}
+```
 
-## 💡 Considerações Finais
+## Exemplo de Uso
+Aqui poderia ser adicionado um exemplo simples de como utilizar as funções implementadas, demonstrando como enviar mensagens ao suporte e como carregar e exibir essas mensagens.
 
-Este projeto foi desenvolvido para consolidar o conhecimento adquirido na disciplina de Algoritmos e Estrutura de Dados, aplicando conceitos fundamentais de maneira prática. No entanto, não implementei todas as funcionalidades que gostaria, e algumas telas foram simplificadas por falta de tempo. O código ainda pode ser melhor refatorado e planejado para se tornar mais legível e eficiente.
+---
 
-Planejo expandir o código no futuro, adicionando novas funcionalidades, aplicando conceitos mais avançados e tornando-o mais bem estruturado, com foco na clareza e organização.
+Este projeto demonstra a aplicação prática da estrutura de lista encadeada para gerenciar mensagens de suporte de forma eficiente e organizada.
+
