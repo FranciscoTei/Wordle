@@ -128,10 +128,5 @@ void imprimirMensagensSuporte(NoMensagemSuporte* lista) {
 }
 ```
 
-## Exemplo de Uso
-Aqui poderia ser adicionado um exemplo simples de como utilizar as funções implementadas, demonstrando como enviar mensagens ao suporte e como carregar e exibir essas mensagens.
-
----
-
-Este projeto demonstra a aplicação prática da estrutura de lista encadeada para gerenciar mensagens de suporte de forma eficiente e organizada.
-
+## 
+Para mais informações do projeto consultar o README original no arquivo `README_.md`.
